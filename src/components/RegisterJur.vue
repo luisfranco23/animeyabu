@@ -1,5 +1,8 @@
 <script setup>
 import Footer from './Footer.vue';
+
+
+
 </script>
 
 <template>
@@ -38,7 +41,7 @@ import Footer from './Footer.vue';
             <label class="text-white mt-4">Confirmar contraseña</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
                 type="password" placeholder="• • • • • • •">
-            <button class="w-full h-[60px] bg-purple-200 mt-4 rounded-lg font-extrabold">Acceder</button>
+            <button class="btn-primary">Acceder</button>
         </form>
         </div>
     <Footer/>
