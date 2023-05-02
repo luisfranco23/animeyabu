@@ -1,5 +1,6 @@
 <script setup>
 import Footer from './Footer.vue';
+import Carousel from './Carrusel.vue'
 import axios from 'axios'
 import sha256 from 'js-sha256'
 import { watchEffect } from 'vue'
@@ -65,6 +66,10 @@ axios.post(import.meta.env.VITE_API, data, header)
 
 <template>
     <div class="md:w-1/2 w-screen p-8 bg-gradient-to-t to-purple-100 from-black font-poppins md:to-black">
+        <div class="md:flex hidden items-center gap-3 mb-8">
+            <img src="/icon.svg" alt="icon yabu">
+            <h2 class="text-white font-extrabold">anime<span class="text-purple-100 font-extrabold">yabu.</span></h2>
+        </div>
         <RouterLink to="/login"><img src="/back.svg" alt="buttom back"></RouterLink>
         <section class="flex items-center justify-center gap-4">
             <img src="/mask.svg" alt="logo tanjiro">
@@ -104,27 +109,18 @@ axios.post(import.meta.env.VITE_API, data, header)
                 type="password" placeholder="• • • • • • •" v-model="password_confirmation.value" :ref="password_confirmation.ref">
             <button type="submit" class="btn-primary">Acceder</button>
         </form>
-        <form v-else class="flex flex-col mt-4 mb-2">
-            <label class="text-white">Razón social</label>
-            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
-                placeholder="">
-            <label class="text-white mt-4">NIT</label>
-            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
-                placeholder="">
-            <label class="text-white mt-4">Teléfono</label>
-            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
-                placeholder="">
-            <label class="text-white mt-4">Email</label>
-            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
-                type="email" placeholder="usuario@yabu.com">
-            <label class="text-white mt-4">Contraseña</label>
-            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
-                type="password" placeholder="• • • • • • •">
-            <label class="text-white mt-4">Confirmar contraseña</label>
-            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
-                type="password" placeholder="• • • • • • •">
-            <button class="btn-primary">Acceder</button>
-        </form>
+        <Footer />
     </div>
-    <Footer />
+    <div class="md:flex hidden w-1/2 bg-purple-300 flex-col justify-center items-center">
+        <div class="xl:w-[548px] xl:h-[548px] w-96 h-96 bg-purple-200 rounded-[50%] mt-4">
+            <Carousel />
+        </div>
+        <div class="w-3/5 text-center mt-20">
+            <h1 class="text-white mb-4 lg:text-7xl text-5xl font-roboto font-extrabold">anime<span
+                    class="text-purple-100 lg:text-7xl text-5xl font-roboto font-extrabold">yabu.</span></h1>
+            <p class="text-white font-roboto text-lg">Ver anime en línea en HD, subtitulado o doblado,
+                en tu celular o computadora.
+                ¡Animeyabu, tu portal de anime en línea!</p>
+        </div>
+    </div>
 </template>
