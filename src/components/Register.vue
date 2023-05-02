@@ -64,7 +64,7 @@ axios.post(import.meta.env.VITE_API, data, header)
 </script>
 
 <template>
-    <div>
+    <div class="md:w-1/2 w-screen p-8 bg-gradient-to-t to-purple-100 from-black font-poppins md:to-black">
         <RouterLink to="/login"><img src="/back.svg" alt="buttom back"></RouterLink>
         <section class="flex items-center justify-center gap-4">
             <img src="/mask.svg" alt="logo tanjiro">

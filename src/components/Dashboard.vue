@@ -5,7 +5,7 @@ const deleteSesion = () =>{
     localStorage.removeItem(token)
 }
 
-const user = localStorage.getItem(user)
+// const user = localStorage.getItem(user)
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const user = localStorage.getItem(user)
         </nav>
         <div class="bg-black h-screen w-9/12">
             <div class="m-20 flex-col">
-                <h1 class="text-white text-2xl">Hola, <span class="font-extrabold">{{ `${user.name} ${user.lastname}` }}</span></h1>
+                <h1 class="text-white text-2xl">Hola, <span class="font-extrabold">{{ `${user?.name} ${user?.lastname}` }}</span></h1>
                 <p class="text-white mt-8">Selecciona una opción:</p>
                 <button class="md:w-80 w-full btn-primary">Ver todas las categorias</button>
                 <button class="md:w-80 w-full btn-primary">Crear categorías</button>
