@@ -10,6 +10,7 @@ import Login from './components/Login.vue'
 import Register from './components/Register.vue'
 import RegisterJur from './components/RegisterJur.vue'
 import Dashboard from './components/Dashboard.vue'
+import Categories from './components/Categories.vue'
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 
@@ -19,7 +20,8 @@ const router = createRouter({
         { path: '/login', name: 'login', component: Login },
         {path: '/register', name: 'register', component: Register},
         {path: '/registerType2', name: 'registerType2', component: RegisterJur},
-        {path: '/dashboard', name: 'dashboard', component: Dashboard }
+        {path: '/dashboard', name: 'dashboard', component: Dashboard },
+        {path: '/categories', name: 'categories', component: Categories}
     ]
 })
 
