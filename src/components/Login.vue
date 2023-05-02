@@ -9,7 +9,9 @@ import Carousel from './Carrusel.vue'
 
 const { useField, handleSubmit } = useForm()
 
-const email = useField('email')
+const email = useField('email',{
+    required: true 
+})
 const password = useField('password')
 
 const onSubmit = handleSubmit(async (data) => {
@@ -36,7 +38,7 @@ const onSubmit = handleSubmit(async (data) => {
             <img src="/icon.svg" alt="icon yabu">
             <h2 class="text-white font-extrabold">anime<span class="text-purple-100 font-extrabold">yabu.</span></h2>
         </div>
-        <RouterLink to="/login"> <img src="/back.svg" alt="buttom back"></RouterLink>
+        <RouterLink to="/"> <img src="/back.svg" alt="buttom back"></RouterLink>
         <section class="flex items-center flex-col">
             <img src="/logo.svg" alt="logo tanjiro">
             <h1 class="text-white text-5xl font-extrabold mt-4">ひさしぶり!</h1>
@@ -52,7 +54,7 @@ const onSubmit = handleSubmit(async (data) => {
             <p class="text-purple-200 text-sm mt-2 text-right cursor-pointer">¿Olvido la contraseña</p>
             <button type="submit" class="btn-primary">Acceder</button>
         </form>
-        <Footer />
+        <Footer message="Registrate" route="/register" />
     </main>
     <div class="md:flex hidden w-1/2 bg-purple-300 flex-col justify-center items-center">
         <div class="xl:w-[548px] xl:h-[548px] w-96 h-96 bg-purple-200 rounded-[50%] mt-4">
