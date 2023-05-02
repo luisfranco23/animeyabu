@@ -1,4 +1,6 @@
 <script setup>
+import { RouterLink } from 'vue-router';
+
 
 const deleteSesion = () => {
     localStorage.removeItem(user)
@@ -17,7 +19,7 @@ const deleteSesion = () => {
             </div>
             <h2 class="font-bold">Categorías</h2>
             <ul class="list-disc ml-10 cursor-pointer">
-                <li class="hover:underline">Ver todas</li>
+                <li class="hover:underline"><RouterLink to="/categories">Ver todas</RouterLink></li>
                 <li class="hover:underline">Crear</li>
             </ul>
             <h2 class="font-bold cursor-pointer" @click="deleteSesion">Cerrar sesión</h2>
@@ -27,8 +29,8 @@ const deleteSesion = () => {
                 <h1 class="text-white text-2xl">Hola, <span class="font-extrabold">{{ `${user?.name} ${user?.lastname}`
                 }}</span></h1>
                 <p class="text-white mt-8">Selecciona una opción:</p>
-                <button class="md:w-80 w-full btn-primary">Ver todas las categorias</button>
-                <button class="md:w-80 w-full btn-primary">Crear categorías</button>
+                <button class="md:w-80 w-full btn-primary"><RouterLink to="/categories"> Ver todas las categorias</RouterLink></button>
+                <button class="md:w-80 w-full btn-primary"><RouterLink to="/category">Crear categorías</RouterLink></button>
                 <button class="md:w-80 w-full btn-primary" @click="deleteSesion">Cerrar sesión</button>
             </div>
         </div>

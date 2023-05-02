@@ -11,17 +11,19 @@ import Register from './components/Register.vue'
 import RegisterJur from './components/RegisterJur.vue'
 import Dashboard from './components/Dashboard.vue'
 import Categories from './components/Categories.vue'
+import Category from  './components/Category.vue'
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/login', name: 'login', component: Login },
+        { path: '/', name: 'login', component: Login },
         {path: '/register', name: 'register', component: Register},
         {path: '/registerType2', name: 'registerType2', component: RegisterJur},
         {path: '/dashboard', name: 'dashboard', component: Dashboard },
-        {path: '/categories', name: 'categories', component: Categories}
+        {path: '/categories', name: 'categories', component: Categories},
+        {path: '/category', name: 'category', component: Category}
     ]
 })
 
