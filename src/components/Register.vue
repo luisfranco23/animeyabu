@@ -80,7 +80,7 @@ axios.post(import.meta.env.VITE_API, data, header)
             <input class="text-white/60" type="radio" value="2" name="juridica" @click="fn" id="juridica">
             <label class="text-white" for="juridica">Jurídica</label>
         </div>
-        <form v-if="isShow"  class="flex flex-col mt-4 mb-2" @submit="onSubmit">
+        <form v-if="isShow"  class="flex flex-col mt-4 mb-2 text-white" @submit="onSubmit">
             <label class="text-white">Nombre</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
                 placeholder="" v-model="name.value" :ref="name.ref">
