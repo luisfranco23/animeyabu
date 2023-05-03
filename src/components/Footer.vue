@@ -1,7 +1,8 @@
 <script setup>
 
 defineProps({
-    message: String
+    message: String,
+    route: String
 })
 
 </script>
@@ -19,6 +20,6 @@ defineProps({
             <img class="cursor-pointer" src="/facebook.svg" alt="logo the facebook">
         </div>
         <p class="text-white text-sm text-center mt-8 font-roboto">Quieres registrarte?
-            <span class="text-purple-200 font-roboto font-thin cursor-pointer"><router-link to="/register" >{{ message || 'Acceder' }}</router-link></span></p>
+            <span class="text-purple-200 font-roboto font-thin cursor-pointer"><router-link :to="route" >{{ message || 'Acceder' }}</router-link></span></p>
     </footer>
 </template>

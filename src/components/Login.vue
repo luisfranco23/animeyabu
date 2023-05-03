@@ -33,7 +33,7 @@ const onSubmit = handleSubmit(async (data) => {
 </script>
 
 <template>
-    <main class="md:w-1/2 w-screen p-8 bg-gradient-to-t to-purple-100 from-black font-poppins md:to-black">
+    <main class="md:w-1/2 w-screen h-screen p-8 bg-gradient-to-t to-purple-100 from-black font-poppins md:to-black">
         <div class="md:flex hidden items-center gap-3 mb-8">
             <img src="/icon.svg" alt="icon yabu">
             <h2 class="text-white font-extrabold">anime<span class="text-purple-100 font-extrabold">yabu.</span></h2>
@@ -54,7 +54,7 @@ const onSubmit = handleSubmit(async (data) => {
             <p class="text-purple-200 text-sm mt-2 text-right cursor-pointer">¿Olvido la contraseña</p>
             <button type="submit" class="btn-primary">Acceder</button>
         </form>
-        <Footer message="Registrate" />
+        <Footer message="Registrate" route="/register" />
     </main>
     <div class="md:flex hidden w-1/2 bg-purple-300 flex-col justify-center items-center">
         <div class="xl:w-[548px] xl:h-[548px] w-96 h-96 bg-purple-200 rounded-[50%] mt-4">

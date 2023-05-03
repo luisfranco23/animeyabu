@@ -4,7 +4,7 @@ import Carousel from './Carrusel.vue'
 import axios from 'axios'
 import sha256 from 'js-sha256'
 import { ref } from 'vue'
-import { useForm} from 'vue-hooks-form'
+import { useForm } from 'vue-hooks-form'
 import Swal from 'sweetalert2'
 
 const optionValue = ref('1')
@@ -15,7 +15,7 @@ const optionValue = ref('1')
 // }
 
 
-const{ useField, handleSubmit } = useForm({defaultValues: {}})
+const { useField, handleSubmit } = useForm({ defaultValues: {} })
 
 const name = useField('name')
 const lastname = useField('lastname')
@@ -27,33 +27,33 @@ const password_confirmation = useField('password_confirmation')
 
 const onSubmit = handleSubmit(async (data) => {
     if (data.password !== data.password_confirmation) {
-    Swal.fire({
-        title: 'Error',
-        text: 'Passwords do not match',
-        icon: 'error',
-        confirmButtonText: 'Ok'
-    })
-}
+        Swal.fire({
+            title: 'Error',
+            text: 'Passwords do not match',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
     axios.get(import.meta.env.VITE_APITIMEZONE)
-    .then(response => {
+        .then(response => {
 
-    const signature = import.meta.env.VITE_APP_PRIVATE_KEY + "," + import.meta.env.VITE_APP_PUBLIC_KEY + "," + response.data.timezone
-    const signatureHash = sha256(signature)
-    axios.post(import.meta.env.VITE_API, data, {Headers: signatureHash})
-    .then(res => console.log(res.data))
-    .catch(err =>{
-        console.log(err);
-        if(err.response.status  === 302 ) {
-            const apiKey = err.config.Headers
-            axios.post(err.config.url, {apiKey, signature: signatureHash, utcTimeStamp: response.data.timezone})
+            const signature = import.meta.env.VITE_APP_PRIVATE_KEY + "," + import.meta.env.VITE_APP_PUBLIC_KEY + "," + response.data.timezone
+            const signatureHash = sha256(signature)
+            axios.post(import.meta.env.VITE_API, {...data, type_user_id: optionValue}, { Headers: signatureHash })
                 .then(res => console.log(res.data))
-                .catch(error => console.log(error))
-        }else{
-            console.log(err);
-        }
-    } )
-    })
-    .catch(err => console.log(err))
+                .catch(err => {
+                    console.log(err);
+                    if (err.response.status === 302) {
+                        const apiKey = err.config.Headers
+                        axios.post(err.config.url, { apiKey, signature: signatureHash, utcTimeStamp: response.data.timezone }, { headers: signatureHash })
+                            .then(res => console.log(res.data))
+                            .catch(error => console.log(error))
+                    } else {
+                        console.log(err);
+                    }
+                })
+        })
+        .catch(err => console.log(err))
 
 
 })
@@ -81,52 +81,54 @@ const onSubmit = handleSubmit(async (data) => {
             <input class="text-white/60" type="radio" value="2" name="juridica" v-model="optionValue" id="juridica">
             <label class="text-white" for="juridica">Jurídica</label>
         </div>
-        <form v-if="optionValue === '1'"  class="flex flex-col mt-4 mb-2 text-white" @submit="onSubmit">
-            <label class="text-white">Nombre</label>
+        <form v-if="optionValue === '1'" class="flex flex-col mt-4 mb-2 text-white" @submit="onSubmit">
+            <label class="">Nombre</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
                 placeholder="" v-model="name.value" :ref="name.ref">
-            <label class="text-white mt-4">Apellido</label>
+            <label class=" mt-4">Apellido</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
                 placeholder="" v-model="lastname.value" :ref="lastname.ref">
-            <label class="text-white mt-4">Teléfono</label>
-            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="number"
+            <label class=" mt-4">Teléfono</label>
+            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
                 placeholder="" v-model="telephone.value" :ref="telephone.ref">
-            <label class="text-white mt-4">Numero de identificación</label>
-            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="number"
+            <label class=" mt-4">Numero de identificación</label>
+            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
                 placeholder="" v-model="identity_document.value" :ref="identity_document.ref">
-            <label class="text-white mt-4">Email</label>
+            <label class=" mt-4">Email</label>
+            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="email"
+                placeholder="usuario@yabu.com" autocomplete="username" v-model="email.value" :ref="email.ref">
+            <label class=" mt-4">Contraseña</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
-                type="email" placeholder="usuario@yabu.com" autocomplete="username" v-model="email.value" :ref="email.ref">
-            <label class="text-white mt-4">Contraseña</label>
+                type="password" placeholder="• • • • • • •" autocomplete="new-password" v-model="password.value"
+                :ref="password.ref">
+            <label class=" mt-4">Confirmar contraseña</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
-                type="password" placeholder="• • • • • • •" autocomplete="new-password" v-model="password.value" :ref="password.ref">
-            <label class="text-white mt-4">Confirmar contraseña</label>
-            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
-                type="password" placeholder="• • • • • • •" autocomplete="new-password" v-model="password_confirmation.value" :ref="password_confirmation.ref">
+                type="password" placeholder="• • • • • • •" autocomplete="new-password"
+                v-model="password_confirmation.value" :ref="password_confirmation.ref">
             <button type="submit" class="btn-primary">Acceder</button>
         </form>
-        <form v-else-if="optionValue === '2'" class="flex flex-col mt-4 mb-2">
-            <label class="text-white">Razón social</label>
+        <form v-else-if="optionValue === '2'" class="flex flex-col mt-4 mb-2 text-white">
+            <label class="">Razón social</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
                 placeholder="">
-            <label class="text-white mt-4">NIT</label>
+            <label class=" mt-4">NIT</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
                 placeholder="">
-            <label class="text-white mt-4">Teléfono</label>
+            <label class=" mt-4">Teléfono</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
                 placeholder="">
-            <label class="text-white mt-4">Email</label>
-            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
-                type="email" placeholder="usuario@yabu.com">
-            <label class="text-white mt-4">Contraseña</label>
+            <label class=" mt-4">Email</label>
+            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="email"
+                placeholder="usuario@yabu.com">
+            <label class=" mt-4">Contraseña</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
                 type="password" placeholder="• • • • • • •">
-            <label class="text-white mt-4">Confirmar contraseña</label>
+            <label class=" mt-4">Confirmar contraseña</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
                 type="password" placeholder="• • • • • • •">
             <button class="btn-primary">Acceder</button>
         </form>
-        <Footer message="Acceder" route="/" />
+        <Footer message="Acceder" route="/login" />
     </div>
     <div class="md:flex hidden w-1/2 bg-purple-300 flex-col justify-center items-center">
         <div class="xl:w-[548px] xl:h-[548px] w-96 h-96 bg-purple-200 rounded-[50%] mt-4">
