@@ -4,11 +4,11 @@ import Carousel from './Carrusel.vue'
 import axios from 'axios'
 import sha256 from 'js-sha256'
 import { watchEffect } from 'vue'
-
+import { ref } from 'vue'
 import { useForm} from 'vue-hooks-form'
 import Swal from 'sweetalert2'
 
-let isShow = true
+const optionValue = ref('1')
 const timezone = ''
 
 watchEffect(() => {
@@ -25,9 +25,7 @@ const header = {
     Headers: {Authorization: signatureHash}
 }
 
-const fn = () => {
-   isShow = !isShow
-}
+
 const{ useField, handleSubmit } = useForm({defaultValues: {}})
 
 const name = useField('name')
@@ -48,18 +46,16 @@ const onSubmit = handleSubmit(async (data) => {
     })
 }
 
-axios.post(import.meta.env.VITE_API, data, header)
-.then(res => localStorage.setItem(user, res.data))
-.catch(err => {
-    Swal.fire({
-        title: 'Error',
-        text: err.message,
-        icon: 'error',
-        confirmButtonText: 'Cool'
+    axios.post(import.meta.env.VITE_API, data, header)
+    .then(res => localStorage.setItem(user, res.data))
+    .catch(err => {
+        Swal.fire({
+            title: 'Error',
+            text: err.message,
+            icon: 'error',
+            confirmButtonText: 'Cool'
+        })
     })
-})
-
-
 })
 
 </script>
@@ -80,12 +76,12 @@ axios.post(import.meta.env.VITE_API, data, header)
         </section>
         <div class="flex gap-4 mt-8 items">
             <p class="text-white">Tipo de persona</p>
-            <input class="text-white/60" value="1" type="radio" name="natural" @click="fn" id="natural">
+            <input class="text-white/60" value="1" type="radio" name="natural" v-model="optionValue" id="natural">
             <label class="text-white" for="natural">Natural</label>
-            <input class="text-white/60" type="radio" value="2" name="juridica" @click="fn" id="juridica">
+            <input class="text-white/60" type="radio" value="2" name="juridica" v-model="optionValue" id="juridica">
             <label class="text-white" for="juridica">Jurídica</label>
         </div>
-        <form v-if="isShow"  class="flex flex-col mt-4 mb-2 text-white" @submit="onSubmit">
+        <form v-if="optionValue === '1'"  class="flex flex-col mt-4 mb-2 text-white" @submit="onSubmit">
             <label class="text-white">Nombre</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
                 placeholder="" v-model="name.value" :ref="name.ref">
@@ -108,6 +104,27 @@ axios.post(import.meta.env.VITE_API, data, header)
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
                 type="password" placeholder="• • • • • • •" v-model="password_confirmation.value" :ref="password_confirmation.ref">
             <button type="submit" class="btn-primary">Acceder</button>
+        </form>
+        <form v-else-if="optionValue === '2'" class="flex flex-col mt-4 mb-2">
+            <label class="text-white">Razón social</label>
+            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
+                placeholder="">
+            <label class="text-white mt-4">NIT</label>
+            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
+                placeholder="">
+            <label class="text-white mt-4">Teléfono</label>
+            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100" type="text"
+                placeholder="">
+            <label class="text-white mt-4">Email</label>
+            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
+                type="email" placeholder="usuario@yabu.com">
+            <label class="text-white mt-4">Contraseña</label>
+            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
+                type="password" placeholder="• • • • • • •">
+            <label class="text-white mt-4">Confirmar contraseña</label>
+            <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
+                type="password" placeholder="• • • • • • •">
+            <button class="btn-primary">Acceder</button>
         </form>
         <Footer message="Acceder" route="/" />
     </div>

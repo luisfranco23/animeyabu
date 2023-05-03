@@ -15,16 +15,22 @@ import Category from  './components/Category.vue'
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 
+const routesPublic = ['login', 'register', 'registerType2']
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         { path: '/', name: 'login', component: Login },
         {path: '/register', name: 'register', component: Register},
-        {path: '/registerType2', name: 'registerType2', component: RegisterJur},
         {path: '/dashboard', name: 'dashboard', component: Dashboard },
         {path: '/categories', name: 'categories', component: Categories},
         {path: '/category', name: 'category', component: Category}
     ]
+})
+
+router.beforeEach((to, from, next) => {
+    const authenticate = localStorage.getItem('token')
+    if (!authenticate && !routesPublic.includes(to.name)) next({name: 'login'})
+    else next()
 })
 
 createApp(App).use(router).use(VueSweetalert2).use(VueAxios, axios).mount('#app')
