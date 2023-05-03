@@ -8,16 +8,11 @@ import { useForm} from 'vue-hooks-form'
 import Swal from 'sweetalert2'
 
 const optionValue = ref('1')
-let utcTimeStamp = ''
 
 
-
-const signature = import.meta.env.VITE_APP_PRIVATE_KEY + "," + import.meta.env.VITE_APP_PUBLIC_KEY + "," + utcTimeStamp
-const signatureHash = sha256(signature)
-
-const header = {
-    Headers: {Authorization: signatureHash}
-}
+// const header = {
+//     Headers: {Authorization: signatureHash}
+// }
 
 
 const{ useField, handleSubmit } = useForm({defaultValues: {}})
@@ -36,18 +31,20 @@ const onSubmit = handleSubmit(async (data) => {
         title: 'Error',
         text: 'Passwords do not match',
         icon: 'error',
-        confirmButtonText: 'Cool'
+        confirmButtonText: 'Ok'
     })
 }
     axios.get(import.meta.env.VITE_APITIMEZONE)
     .then(response => {
-        
-    axios.post(import.meta.env.VITE_API, data, header)
+
+    const signature = import.meta.env.VITE_APP_PRIVATE_KEY + "," + import.meta.env.VITE_APP_PUBLIC_KEY + "," + response.data.timezone
+    const signatureHash = sha256(signature)
+    axios.post(import.meta.env.VITE_API, data, {Headers: signatureHash})
     .then(res => console.log(res.data))
     .catch(err =>{
         console.log(err);
         if(err.response.status  === 302 ) {
-            const apiKey = err.config.Headers.Authorization
+            const apiKey = err.config.Headers
             axios.post(err.config.url, {apiKey, signature: signatureHash, utcTimeStamp: response.data.timezone})
                 .then(res => console.log(res.data))
                 .catch(error => console.log(error))
