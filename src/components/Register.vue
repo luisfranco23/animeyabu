@@ -3,22 +3,16 @@ import Footer from './Footer.vue';
 import Carousel from './Carrusel.vue'
 import axios from 'axios'
 import sha256 from 'js-sha256'
-import { watchEffect } from 'vue'
 import { ref } from 'vue'
 import { useForm} from 'vue-hooks-form'
 import Swal from 'sweetalert2'
 
 const optionValue = ref('1')
-const timezone = ''
-
-watchEffect(() => {
-axios.get(import.meta.env.VITE_APITIMEZONE)
-    .then(res => timezone = res.data)
-    .catch(err => console.log(err))
-})
+let utcTimeStamp = ''
 
 
-const signature = import.meta.env.VITE_APP_PRIVATE_KEY + "," + import.meta.env.VITE_APP_PUBLIC_KEY + "," + timezone
+
+const signature = import.meta.env.VITE_APP_PRIVATE_KEY + "," + import.meta.env.VITE_APP_PUBLIC_KEY + "," + utcTimeStamp
 const signatureHash = sha256(signature)
 
 const header = {
@@ -45,17 +39,26 @@ const onSubmit = handleSubmit(async (data) => {
         confirmButtonText: 'Cool'
     })
 }
-
+    axios.get(import.meta.env.VITE_APITIMEZONE)
+    .then(response => {
+        
     axios.post(import.meta.env.VITE_API, data, header)
-    .then(res => localStorage.setItem(user, res.data))
-    .catch(err => {
-        Swal.fire({
-            title: 'Error',
-            text: err.message,
-            icon: 'error',
-            confirmButtonText: 'Cool'
-        })
+    .then(res => console.log(res.data))
+    .catch(err =>{
+        console.log(err);
+        if(err.response.status  === 302 ) {
+            const apiKey = err.config.Headers.Authorization
+            axios.post(err.config.url, {apiKey, signature: signatureHash, utcTimeStamp: response.data.timezone})
+                .then(res => console.log(res.data))
+                .catch(error => console.log(error))
+        }else{
+            console.log(err);
+        }
+    } )
     })
+    .catch(err => console.log(err))
+
+
 })
 
 </script>
@@ -96,13 +99,13 @@ const onSubmit = handleSubmit(async (data) => {
                 placeholder="" v-model="identity_document.value" :ref="identity_document.ref">
             <label class="text-white mt-4">Email</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
-                type="email" placeholder="usuario@yabu.com" v-model="email.value" :ref="email.ref">
+                type="email" placeholder="usuario@yabu.com" autocomplete="username" v-model="email.value" :ref="email.ref">
             <label class="text-white mt-4">Contraseña</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
-                type="password" placeholder="• • • • • • •" v-model="password.value" :ref="password.ref">
+                type="password" placeholder="• • • • • • •" autocomplete="new-password" v-model="password.value" :ref="password.ref">
             <label class="text-white mt-4">Confirmar contraseña</label>
             <input class="h-[64px] rounded-lg border-2 border-white bg-white/40 p-4 placeholder:text-gray-100"
-                type="password" placeholder="• • • • • • •" v-model="password_confirmation.value" :ref="password_confirmation.ref">
+                type="password" placeholder="• • • • • • •" autocomplete="new-password" v-model="password_confirmation.value" :ref="password_confirmation.ref">
             <button type="submit" class="btn-primary">Acceder</button>
         </form>
         <form v-else-if="optionValue === '2'" class="flex flex-col mt-4 mb-2">

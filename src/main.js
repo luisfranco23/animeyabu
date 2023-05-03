@@ -8,7 +8,6 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import { createRouter, createWebHistory } from "vue-router";
 import Login from './components/Login.vue'
 import Register from './components/Register.vue'
-import RegisterJur from './components/RegisterJur.vue'
 import Dashboard from './components/Dashboard.vue'
 import Categories from './components/Categories.vue'
 import Category from  './components/Category.vue'
